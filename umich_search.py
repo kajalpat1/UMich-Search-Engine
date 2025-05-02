@@ -106,3 +106,5 @@ for result in response.results:
                 print(f'{Fore.RED}Summary:{Style.RESET_ALL} {summary}\n')
          else:
                 print(f'{Fore.YELLOW}Summary could not be generated.{Style.RESET_ALL}')
+
+print('HELLO WORLD')
