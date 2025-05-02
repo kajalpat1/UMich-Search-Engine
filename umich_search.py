@@ -85,10 +85,9 @@ def fetch_article_content(url):
     except Exception as e:  
         print(f"Error fetching article content: {e}") 
     
-
+summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
 #function to summarize text using transformers
 def summarize_text(text, max_length=250, min_length=100):
-    summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
     if len(text.split()) > max_length:
          text = ' '.join(text.split()[:max_length])
     summary = summarizer(text, max_length=max_length, min_length=min_length, do_sample=False)
