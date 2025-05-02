@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UMich AI Search</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://umich.edu/favicon.ico">
+    <script>
+        function showSpinner() {
+            document.getElementById("spinner").style.display = "block";
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>UMich AI-Powered Search</h1>
+        <form method="POST" onsubmit="showSpinner()">
+            <input type="text" name="query" placeholder="Search UMich..." required>
+            <select name="domain">
+                <option value="all">All UMich</option>
+                <option value="libraries">Libraries</option>
+                <option value="health">Health</option>
+                <option value="admissions">Admissions</option>
+                <option value="housing">Housing & Dining</option>
+                <option value="athletics">Athletics</option>
+                <option value="studentlife">Student Life</option>
+                <option value="academics">Academic Units</option>
+                <option value="research">Research</option>
+                <option value="admin">Admin & Support</option>
+                <option value="media">News & Media</option>
+            </select>
+            <button type="submit">Search</button>
+        </form>
+
+        <div id="spinner" class="spinner" style="display:none;"></div>
+
+        {% if results %}
+            <div class="results">
+                {% for r in results %}
+                    <div class="card">
+                        <h2><a href="{{ r.url }}" target="_blank">{{ r.title }}</a></h2>
+                        <p>{{ r.summary }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

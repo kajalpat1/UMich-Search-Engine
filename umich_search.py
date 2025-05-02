@@ -10,7 +10,6 @@ from colorama import init, Fore, Style
 #Initialize colorama for colored output 
 init(autoreset=True)
 
-
 #Initialize Exa with API key
 exa = Exa(EXA_API_KEY)
 
@@ -93,6 +92,7 @@ def summarize_text(text, max_length=250, min_length=100):
     summary = summarizer(text, max_length=max_length, min_length=min_length, do_sample=False)
     return summary[0]['summary_text']
 
+
 #print search results with summaries
 for result in response.results:
   print(f'{Fore.BLUE}Title:{Style.RESET_ALL} {result.title}')
@@ -106,5 +106,3 @@ for result in response.results:
                 print(f'{Fore.RED}Summary:{Style.RESET_ALL} {summary}\n')
          else:
                 print(f'{Fore.YELLOW}Summary could not be generated.{Style.RESET_ALL}')
-
-print('HELLO WORLD')
