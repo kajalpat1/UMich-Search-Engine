@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 from config import EXA_API_KEY
 import re
 from markupsafe import Markup, escape
+from concurrent.futures import ThreadPoolExecutor
 
 app = Flask(__name__)
 
@@ -20,7 +21,7 @@ def highlight(text, phrase):
 app.jinja_env.filters['highlight'] = highlight
 
 exa = Exa(EXA_API_KEY)
-summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
 
 
 
@@ -65,8 +66,8 @@ def fetch_article_content(url):
         return ""
 
 def summarize_text(text):
-    if len(text.split()) > 100:
-        text = ' '.join(text.split()[:100])
+    if len(text.split()) > 90:
+        text = ' '.join(text.split()[:90])
     summary = summarizer(text, max_length=100, min_length=100, do_sample=False)
     return summary[0]['summary_text']
 
@@ -88,12 +89,20 @@ def index():
         domains = domain_map.get(selected_category, [])
         response = exa.search(query, num_results=10, type='neural', include_domains=domains)
 
-        for result in response.results:
-            article = fetch_article_content(result.url)
-            summary = summarize_text(article) if article else "Summary unavailable."
+        urls = [result.url for result in response.results]
+        titles = [result.title for result in response.results]
+
+        def process(url):
+            article = fetch_article_content(url)
+            return summarize_text(article) if article else "Summary unavailable."
+
+        with ThreadPoolExecutor(max_workers=5) as executor:
+            summaries = list(executor.map(process, urls))
+
+        for title, url, summary in zip(titles, urls, summaries):
             results.append({
-                'title': result.title,
-                'url': result.url,
+                'title': title,
+                'url': url,
                 'summary': summary
             })
 
