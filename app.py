@@ -25,7 +25,6 @@ summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
 
 
 
-
 domain_map = {
     "all": [  # all 47 domains
         "umich.edu", "lib.umich.edu", "lsa.umich.edu", "engin.umich.edu",
