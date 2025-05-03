@@ -4,11 +4,25 @@ from transformers import pipeline
 import requests
 from bs4 import BeautifulSoup
 from config import EXA_API_KEY
-
+import re
+from markupsafe import Markup, escape
 
 app = Flask(__name__)
+
+def highlight(text, phrase):
+    if not phrase:
+        return escape(text)
+    # Use regex to ignore case and only match full words
+    pattern = re.compile(r'(' + re.escape(phrase) + r')', re.IGNORECASE)
+    highlighted = pattern.sub(r'<mark>\1</mark>', escape(text))
+    return Markup(highlighted)
+
+app.jinja_env.filters['highlight'] = highlight
+
 exa = Exa(EXA_API_KEY)
 summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+
+
 
 
 domain_map = {

@@ -15,8 +15,11 @@
 <body>
     <div class="container">
         <h1>UMich AI-Powered Search</h1>
+        {% if not results %}
+            <p class="welcome-msg">Welcome! Use the search bar above to explore UMich</p>
+        {% endif %}
         <form method="POST" onsubmit="showSpinner()">
-            <input type="text" name="query" placeholder="Search UMich..." required>
+            <input type="text" name="query" placeholder="Search UMich..." value="{{ query | default('') }}" required>
             <select name="domain">
                 <option value="all">All UMich</option>
                 <option value="libraries">Libraries</option>
@@ -40,7 +43,7 @@
                 {% for r in results %}
                     <div class="card">
                         <h2><a href="{{ r.url }}" target="_blank">{{ r.title }}</a></h2>
-                        <p>{{ r.summary }}</p>
+                        <p>{{ r.summary | highlight(query) }}</p>
                     </div>
                 {% endfor %}
             </div>

@@ -129,6 +129,13 @@ select {
     background-color: #003366;
 }
 
+.welcome-msg {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 10px 0 30px;
+    color: #333;
+}
+
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
