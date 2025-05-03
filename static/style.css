@@ -1,7 +1,7 @@
 body {
     font-family: 'Roboto', sans-serif;
     background: url('/static/bg-m.jpg') repeat;
-    background-position: center center;
+    background-position: center top 100px;;
     background-size: contain;
     background-attachment: fixed;
     margin: 0;
