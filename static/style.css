@@ -1,7 +1,7 @@
 body {
     font-family: 'Roboto', sans-serif;
-    background: url('/static/bg.jpg') no-repeat center center fixed;
-    background-size: cover;
+    background: url('/static/bg-m.jpg') repeat;
+    background-size: auto;
     margin: 0;
     padding: 0;
     color: #00274C;
@@ -135,6 +135,8 @@ select {
     margin-top: 10px 0 30px;
     color: #333;
 }
+
+
 
 @keyframes spin {
     0% { transform: rotate(0deg); }
