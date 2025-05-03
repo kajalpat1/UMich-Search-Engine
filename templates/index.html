@@ -16,7 +16,7 @@
     <div class="container">
         <h1>UMich AI-Powered Search</h1>
         {% if not results %}
-            <p class="welcome-msg">Welcome! Use the search bar above to explore UMich</p>
+            <p class="welcome-msg">Your gateway to all things Michigan. Explore UMich sites and get insights on what’s happening around campus.</p>
         {% endif %}
         <form method="POST" onsubmit="showSpinner()">
             <input type="text" name="query" placeholder="Search UMich..." value="{{ query | default('') }}" required>
