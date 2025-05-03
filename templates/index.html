@@ -44,6 +44,14 @@
                     </div>
                 {% endfor %}
             </div>
+            <div class="pagination">
+                {% if page > 1 %}
+                    <a href="?query={{ query }}&domain={{ domain_filter }}&page={{ page - 1 }}">← Previous</a>
+                {% endif %}
+                {% if has_more %}
+                    <a href="?query={{ query }}&domain={{ domain_filter }}&page={{ page + 1 }}">Next →</a>
+                {% endif %}
+            </div>
         {% endif %}
     </div>
 </body>

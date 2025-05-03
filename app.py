@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for, redirect
 from exa_py import Exa
 from transformers import pipeline
 import requests
@@ -8,7 +8,7 @@ from config import EXA_API_KEY
 
 app = Flask(__name__)
 exa = Exa(EXA_API_KEY)
-summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
+summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
 
 
 domain_map = {
@@ -51,21 +51,28 @@ def fetch_article_content(url):
         return ""
 
 def summarize_text(text):
-    if len(text.split()) > 250:
-        text = ' '.join(text.split()[:250])
-    summary = summarizer(text, max_length=250, min_length=100, do_sample=False)
+    if len(text.split()) > 100:
+        text = ' '.join(text.split()[:100])
+    summary = summarizer(text, max_length=100, min_length=100, do_sample=False)
     return summary[0]['summary_text']
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     results = []
     selected_category = "all"
+    query = " "
+    page = int(request.args.get('page', 1))
+    per_page = 5
 
     if request.method == 'POST':
         query = request.form['query']
         selected_category = request.form['domain']
+        return redirect(url_for('index', query=query, domain=selected_category, page=1))
+    elif request.method == 'GET' and 'query' in request.args:
+        query = request.args.get('query')
+        selected_category = request.args.get('domain', 'all')
         domains = domain_map.get(selected_category, [])
-        response = exa.search(query, num_results=5, type='neural', include_domains=domains)
+        response = exa.search(query, num_results=10, type='neural', include_domains=domains)
 
         for result in response.results:
             article = fetch_article_content(result.url)
@@ -76,7 +83,13 @@ def index():
                 'summary': summary
             })
 
-    return render_template('index.html', results=results, domain_filter=selected_category)
+    start = (page - 1) * per_page
+    end = start + per_page
+    paginated = results[start:end]
+
+    return render_template('index.html', results=paginated, domain_filter=selected_category, query=query, page=page
+                           ,has_more = len(results) > end)
+
 
 if __name__ == '__main__':
     app.run(port=8000, debug=True)
