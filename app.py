@@ -50,7 +50,7 @@ domain_map = {
     "academics": ["lsa.umich.edu", "engin.umich.edu", "law.umich.edu", "ross.umich.edu", "music.umich.edu", "stamps.umich.edu", "education.umich.edu", "arts.umich.edu"],
     "research": ["research.umich.edu", "mcubed.umich.edu", "isr.umich.edu", "ii.umich.edu", "research-compliance.umich.edu", "innovation.umich.edu", "publicengagement.umich.edu"],
     "admin": ["hr.umich.edu", "finance.umich.edu", "global.umich.edu", "leadersandbest.umich.edu", "alumni.umich.edu"],
-    "media": ["michigandaily.com", "michigantoday.umich.ed"]
+    "media": ["michigandaily.com", "michigantoday.umich.edu"]
 }
 
 
